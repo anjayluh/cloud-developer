@@ -4,10 +4,6 @@ import * as AWSXRay from 'aws-xray-sdk'
 const XAWS = AWSXRay.captureAWS(AWS)
 
 // TODO: Implement the fileStorage logic
-import * as AWS from 'aws-sdk'
-import * as AWSXRay from 'aws-xray-sdk'
-
-
 const s3Bucket = process.env.ATTACHMENT_S3_BUCKET
 const urlExpiration = 300
 
