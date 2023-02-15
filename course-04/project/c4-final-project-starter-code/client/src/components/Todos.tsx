@@ -192,10 +192,10 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {todo.attachmentUrl  && (
+              {todo.attachmentUrl && (
                 <Image
-                src={todo.attachmentUrl} size="small" wrapped 
-                onError={(item: { target: { style: { display: string } } })  => item.target.style.display='none'}
+                  src={todo.attachmentUrl} size="small"
+                  wrapped onError={(event: { target: { style: { display: string } } }) => event.target.style.display = 'none'}
                 />
               )}
               <Grid.Column width={16}>
