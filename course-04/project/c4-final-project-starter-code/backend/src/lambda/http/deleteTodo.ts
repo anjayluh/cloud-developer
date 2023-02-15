@@ -29,4 +29,4 @@ handler
     cors({
       credentials: true
     })
-  )x
+  )
