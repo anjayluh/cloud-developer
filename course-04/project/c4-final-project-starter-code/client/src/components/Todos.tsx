@@ -27,13 +27,15 @@ interface TodosState {
   todos: Todo[]
   newTodoName: string
   loadingTodos: boolean
+  isValid: boolean
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     todos: [],
     newTodoName: '',
-    loadingTodos: true
+    loadingTodos: true,
+    isValid: true,
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,19 +47,27 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   }
 
   onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
-    try {
-      const dueDate = this.calculateDueDate()
-      const newTodo = await createTodo(this.props.auth.getIdToken(), {
-        name: this.state.newTodoName,
-        dueDate
-      })
-      this.setState({
-        todos: [...this.state.todos, newTodo],
-        newTodoName: ''
-      })
-    } catch {
-      alert('Todo creation failed')
+    if (!this.state.newTodoName) {
+      this.setState({ isValid: false })
+      return
     }
+    else {
+      this.setState({ isValid: true })
+      try {
+        const dueDate = this.calculateDueDate()
+        const newTodo = await createTodo(this.props.auth.getIdToken(), {
+          name: this.state.newTodoName,
+          dueDate
+        })
+        this.setState({
+          todos: [...this.state.todos, newTodo],
+          newTodoName: ''
+        })
+      } catch {
+        alert('Todo creation failed')
+      }
+    }
+
   }
 
   onTodoDelete = async (todoId: string) => {
@@ -130,6 +140,13 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
             placeholder="To change the world..."
             onChange={this.handleNameChange}
           />
+          {!this.state.isValid && (
+            <Grid.Column width={16}>
+              <Header as='h4' inverted color='red'>
+                Invalid input, value cannot be empty!
+              </Header>
+            </Grid.Column>
+          )}
         </Grid.Column>
         <Grid.Column width={16}>
           <Divider />
